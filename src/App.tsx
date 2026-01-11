@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { useDebounce } from "react-use";
 import Search from "./components/Search";
 import Spinner from "./components/Spinner";
 import MovieCard from "./components/MovieCard";
@@ -21,14 +22,17 @@ interface Movie {
     vote_average: number;
     release_date: string;
     original_language: string;
-}
+};
 
 const App = () => {
     const [searchTerm, setSearchTerm] = useState<string>("");
     const [errorMessage, setErrorMessage] = useState<string>("");
     const [movies, setMovies] = useState<Movie[]>([]);
-    const [isLoading, setIsLoading] = useState(false)
-
+    const [isLoading, setIsLoading] = useState(false);
+    const [debouncedSearchTerm, setDebouncedSearchTerm] = useState<string>("");
+    
+    useDebounce(() => setDebouncedSearchTerm(searchTerm), 500, [searchTerm]);
+    
     const fetchMovies = async (query: string = "") => {
         setErrorMessage("")
         setIsLoading(true)
@@ -62,8 +66,8 @@ const App = () => {
     }
 
     useEffect(() => {
-        fetchMovies(searchTerm)
-    }, [searchTerm]);
+        fetchMovies(debouncedSearchTerm)
+    }, [debouncedSearchTerm]);
 
 
   return (
@@ -101,8 +105,6 @@ const App = () => {
                       }
                       
                   </section>
-                  
-                  
               </div>
       </main>
     </>
