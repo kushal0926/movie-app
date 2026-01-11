@@ -29,13 +29,16 @@ const App = () => {
     const [movies, setMovies] = useState<Movie[]>([]);
     const [isLoading, setIsLoading] = useState(false)
 
-    const fetchMovies = async () => {
+    const fetchMovies = async (query: string = "") => {
         setErrorMessage("")
         setIsLoading(true)
         
         try {
-            const endpoint = `${API_BASE_URL}/discover/movie?sort_by=popularity.desc`;
+            const endpoint = query
+                ? `${API_BASE_URL}/search/movie?query=${encodeURIComponent(query)}` 
+                : `${API_BASE_URL}/discover/movie?sort_by=popularity.desc`;
             const response = await fetch(endpoint, API_OPTIONS);
+            
             if (!response.ok) {
                 throw new Error("FAILED TO FETCH MVOIES")
             };
@@ -59,8 +62,8 @@ const App = () => {
     }
 
     useEffect(() => {
-        fetchMovies()
-    }, []);
+        fetchMovies(searchTerm)
+    }, [searchTerm]);
 
 
   return (
