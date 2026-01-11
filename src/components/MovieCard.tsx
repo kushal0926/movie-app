@@ -1,4 +1,3 @@
-
 interface Movie {
     id: number;
     title: string;
@@ -6,23 +5,32 @@ interface Movie {
     overview: string;
     vote_average: number;
     release_date: string;
+    original_language: string
 }
 
 interface MovieCardProps {
     movie: Movie;
 }
 
-
-const MovieCard = ({ movie }: MovieCardProps) => {
+const MovieCard = ({ movie: { title, vote_average, poster_path, release_date, original_language } }: MovieCardProps) => {
     return (
         <>
-            <li className="movie-card">
-                    <img 
-                        src={movie.poster_path ? `https://image.tmdb.org/t/p/w500${movie.poster_path}` : './placeholder.png'} 
-                        alt={movie.title}
-                    />
-                    <h3 className="m-3">{movie.title}</h3>
-                </li>
+            <div className="movie-card">
+                <img src={poster_path ? `https://image.tmdb.org/t/p/w500/${poster_path}` : "/no-movie.png"} alt={title} />
+                
+                <div className="mt-4">
+                    <h3>{title}</h3>
+                    
+                    <div className="content">
+                        <div className="rating">
+                            <img src="star.svg" alt="star icon" />
+                            <p>{ vote_average ? vote_average.toFixed(1): "N/A"}</p>
+                        </div>
+                        <p className="year">{release_date ? release_date.split("-")[0] : "N/A"}</p>
+                        <p className="lang">{original_language}</p>
+                    </div>
+                </div>
+          </div>
         </>
     )
 }

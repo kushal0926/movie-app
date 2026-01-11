@@ -20,6 +20,7 @@ interface Movie {
     overview: string;
     vote_average: number;
     release_date: string;
+    original_language: string;
 }
 
 const App = () => {
@@ -87,8 +88,10 @@ const App = () => {
                               ) : (
                                       <ul>
                                           {movies.map((movie) => (
-                                             <MovieCard key={movie.id} movie={movie}/>
-                                              
+                                              <MovieCard
+                                                  key={movie.id}
+                                                  movie={movie}
+                                              />
                                           ))}
                                       </ul>
                           )
